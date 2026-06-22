@@ -188,9 +188,10 @@ $product""")  # todo
         try:
             with open(f"storage/products/{file_name}", "w", encoding="utf-8"):
                 pass
-        except:
+        except Exception:
             logger.debug("TRACEBACK", exc_info=True)
             bot.reply_to(m, _("gf_creation_err", file_name), reply_markup=error_keyboard)
+            return
 
         file_index = os.listdir("storage/products").index(file_name)
         offset = file_index - 4 if file_index - 4 > 0 else 0
