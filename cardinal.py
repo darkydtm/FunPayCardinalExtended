@@ -330,7 +330,7 @@ class Cardinal(object):
                 last_time = self.raised_time.get(subcat.category.id)
                 self.raised_time[subcat.category.id] = new_time = int(time.time())  # locale
                 time_delta = "" if not last_time else f" Последнее поднятие: {cardinal_tools.time_to_str(new_time - last_time)} назад."
-                error_text = f"Подождите {cardinal_tools.time_to_str(wait_time)}."
+                error_text = f"Подождите {cardinal_tools.time_to_str(wait_time if wait_time is not None else 7200)}."
             except FunPayAPI.exceptions.RaiseError as e:
                 if e.error_message is not None:
                     error_text = e.error_message

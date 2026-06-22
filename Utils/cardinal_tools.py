@@ -311,6 +311,7 @@ def time_to_str(time_: int):
 
     :return: строку-время.
     """
+    time_ = int(time_ or 0)
     days = time_ // 86400
     hours = (time_ - days * 86400) // 3600
     minutes = (time_ - days * 86400 - hours * 3600) // 60
