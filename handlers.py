@@ -372,7 +372,7 @@ def process_review_handler(c: Cardinal, e: NewMessageEvent | LastChatMessageChan
                             indexes.extend([index1, text_[:index1].rfind(char)])
                         text_ = text_[:max(indexes, key=lambda x: (x < ln - 1, x))] + "🐦"
                     text_ = text_.strip()
-                    while text_.count("\n") > 9 and text.count("\n\n") > 1:
+                    while text_.count("\n") > 9 and text_.count("\n\n") > 1:
                         # заменяем с конца все двойные переносы строк на одинарные, но оставляем как можно больше
                         # переносов строк и не менее одного двойного переноса
                         text_ = text_[::-1].replace("\n\n", "\n",
