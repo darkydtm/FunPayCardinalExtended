@@ -496,6 +496,13 @@ class Cardinal(object):
                     time.sleep(1)
             else:
                 logger.error(_("crd_msg_no_more_attempts_err", chat_id))
+                # Если часть сообщений уже доставлена (например, при многосоставном
+                # сообщении автовыдачи с $photo / $sleep), нельзя сигнализировать о
+                # полном провале: вызывающий код вернёт товар в файл и выдаст его
+                # повторно следующему покупателю. Возвращаем то, что реально ушло.
+                if result:
+                    logger.critical(_("crd_msg_partial_send_err", chat_id))
+                    return result
                 return []
         return result
 
