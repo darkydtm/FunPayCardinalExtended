@@ -597,7 +597,14 @@ def deliver_goods(c: Cardinal, e: NewOrderEvent, *args):
     try:
         if file_name := cfg_obj.get("productsFileName"):
             if c.multidelivery_enabled and not cfg_obj.getboolean("disableMultiDelivery"):
-                amount = e.order.amount if e.order.amount else 1
+                if e.order.amount:
+                    amount = e.order.amount
+                else:
+                    # Кол-во не удалось определить (не распарсилось из HTML) — выдаём 1 шт.,
+                    # но предупреждаем, т.к. при заказе нескольких единиц это недовыдача.
+                    amount = 1
+                    logger.warning(f"Не удалось определить кол-во товара для заказа "
+                                   f"$YELLOW{e.order.id}$RESET, будет выдана 1 шт.")  # locale
             products, goods_left = cardinal_tools.get_products(f"storage/products/{file_name}", amount)
             delivery_text = delivery_text.replace("$product", "\n".join(products).replace("\\n", "\n"))
     except Exception as exc:
