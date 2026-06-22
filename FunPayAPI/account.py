@@ -1209,7 +1209,7 @@ class Account:
         logger.debug(f"Ответ FunPay (поднятие категорий): {json_response}.")  # locale
         wait_time = json_response.get("wait")
         if not json_response.get("error") and not json_response.get("url"):
-            return wait_time
+            return wait_time if wait_time is not None else 7200
         elif json_response.get("url"):
             raise exceptions.RaiseError(response, category, json_response.get("url"), wait_time or 7200)
         elif json_response.get("error") and json_response.get("msg") and \
