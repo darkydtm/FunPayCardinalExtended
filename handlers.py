@@ -524,8 +524,14 @@ def setup_event_attributes_handler(c: Cardinal, e: NewOrderEvent, *args):
             lot_id = lot.id
             break
 
+    # Для проходов startswith / "in" перебираем секции от самого длинного (специфичного)
+    # имени к короткому, чтобы короткое имя (напр. "500") не перехватывало описание,
+    # содержащее более длинное совпадение (напр. "5000 голды").
+    exact_names = list(c.AD_CFG)
+    sorted_names = sorted(exact_names, key=len, reverse=True)
     for i in range(3):
-        for lot_name in c.AD_CFG:
+        names = exact_names if i == 0 else sorted_names
+        for lot_name in names:
             if i == 0:
                 rule = lot_description == lot_name
             elif i == 1:
